@@ -3,134 +3,379 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Учёт техники | Общая база</title>
+    <title>Учёт техники | МЧС Беларуси</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
-        body { background: linear-gradient(135deg, #1e2f3e 0%, #0f1a24 100%); min-height: 100vh; padding: 20px; }
+        
+        body {
+            background: linear-gradient(135deg, #0a2b3e 0%, #1a4a6e 100%);
+            min-height: 100vh;
+            padding: 16px;
+            position: relative;
+        }
+        
+        /* ПРАВИЛЬНЫЙ ФЛАГ РЕСПУБЛИКИ БЕЛАРУСЬ */
+        .belarus-flag {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 100px;
+            height: 50px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border-radius: 4px;
+            z-index: 1000;
+            background: linear-gradient(to bottom, #cc0000 50%, #006633 50%);
+            position: relative;
+        }
+        
+        /* Орнамент на флаге (левая сторона) */
+        .belarus-flag::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 25px;
+            background: #cc0000;
+            background-image: repeating-linear-gradient(
+                45deg,
+                #fff 0px, #fff 2px,
+                #cc0000 2px, #cc0000 6px
+            );
+            background-size: 8px 8px;
+        }
+        
+        /* Дополнительный орнамент */
+        .belarus-flag::after {
+            content: "🇧🇾";
+            position: absolute;
+            bottom: -24px;
+            right: -4px;
+            font-size: 18px;
+            background: rgba(0,0,0,0.6);
+            border-radius: 20px;
+            padding: 2px 6px;
+            color: white;
+        }
+        
         .container { max-width: 550px; margin: 0 auto; }
-        .card { background: white; border-radius: 32px; padding: 24px; margin-bottom: 20px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.3); }
-        h1 { font-size: 1.6rem; color: #1a2a3a; margin-bottom: 8px; }
-        h2 { font-size: 1.2rem; margin: 20px 0 12px 0; color: #1a2a3a; }
-        h3 { margin: 16px 0 10px 0; color: #1a2a3a; }
-        .info-row { background: #f0f4f8; border-radius: 20px; padding: 16px; margin: 16px 0; }
-        .info-row label { font-size: 0.7rem; text-transform: uppercase; color: #5a6e7c; letter-spacing: 0.5px; }
-        .info-row .value { font-size: 1.2rem; font-weight: 700; color: #1e2f3e; }
-        .form-group { margin-bottom: 16px; }
-        label { display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: #5a6e7c; margin-bottom: 6px; }
-        input, select { width: 100%; padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 28px; font-size: 1rem; transition: all 0.2s; background: white; }
-        input:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.2); }
-        button { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 14px 24px; border-radius: 40px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; transition: transform 0.1s; }
+        
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            border-top: 5px solid #ff6600;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Герб МЧС (символика) */
+        .mchs-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #ff6600;
+        }
+        .mchs-badge span {
+            font-size: 2rem;
+        }
+        .mchs-badge h2 {
+            font-size: 0.85rem;
+            color: #1a4a6e;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+        
+        h1 { 
+            font-size: 1.4rem; 
+            margin-bottom: 8px; 
+            color: #1a4a6e; 
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        h2 { font-size: 1.2rem; margin: 16px 0 12px; color: #1a4a6e; }
+        h3 { font-size: 1rem; margin: 12px 0 8px; color: #ff6600; border-left: 3px solid #ff6600; padding-left: 10px; }
+        
+        .form-group { margin-bottom: 14px; }
+        
+        label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #ff6600;
+            margin-bottom: 4px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #d0dbe8;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            background: white;
+            transition: 0.2s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #ff6600;
+            box-shadow: 0 0 0 3px rgba(255,102,0,0.2);
+        }
+        
+        button {
+            background: linear-gradient(135deg, #1a4a6e, #0a2b3e);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
         button:active { transform: scale(0.97); }
-        button.secondary { background: #94a3b8; }
-        button.outline { background: white; color: #667eea; border: 2px solid #667eea; }
-        .btn-group { display: flex; gap: 12px; margin-top: 20px; }
+        
+        .btn-outline {
+            background: white;
+            color: #1a4a6e;
+            border: 2px solid #ff6600;
+        }
+        
+        .btn-outline:hover { background: #fff5ed; }
+        
+        .btn-orange {
+            background: linear-gradient(135deg, #ff6600, #e05500);
+        }
+        
+        .btn-group { display: flex; gap: 10px; margin-top: 16px; }
         .btn-group button { flex: 1; }
-        .car-card { background: #f8fafc; border-radius: 20px; padding: 16px; margin-bottom: 12px; border: 1px solid #e2e8f0; }
-        .car-name { font-weight: 700; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center; }
-        .driver-badge { background: #22c55e; color: white; padding: 2px 10px; border-radius: 40px; font-size: 0.7rem; }
-        .password-panel { background: #f8fafc; border-radius: 28px; padding: 24px; text-align: center; }
-        footer { text-align: center; color: rgba(255,255,255,0.5); font-size: 0.7rem; margin-top: 20px; }
-        .driver-note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px; border-radius: 16px; margin-bottom: 20px; font-size: 0.85rem; color: #92400e; }
-        .success-msg { background: #d1fae5; color: #065f46; padding: 12px; border-radius: 20px; margin-top: 16px; text-align: center; display: none; }
-        .temp-loading { font-size: 0.7rem; color: #667eea; margin-top: 4px; }
-        .qr-container { display: flex; justify-content: center; margin: 15px 0; }
-        .qr-container canvas { background: white; padding: 10px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        @media (max-width: 500px) { .card { padding: 18px; } h1 { font-size: 1.3rem; } }
+        
+        .car-card {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 14px;
+            margin-bottom: 10px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: 0.2s;
+            border-left: 4px solid #ff6600;
+        }
+        
+        .car-card:hover {
+            background: #fff5ed;
+            transform: translateX(4px);
+        }
+        
+        .car-name {
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .badge {
+            padding: 2px 10px;
+            border-radius: 40px;
+            font-size: 0.65rem;
+            color: white;
+        }
+        .badge.admin { background: #1a4a6e; }
+        .badge.driver { background: #ff6600; }
+        
+        .qr-container { display: flex; justify-content: center; margin: 12px 0; }
+        .qr-container canvas { background: white; padding: 8px; border-radius: 16px; border: 2px solid #ff6600; }
+        
+        .success-msg {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 10px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 12px;
+            display: none;
+        }
+        
+        .info-box {
+            background: #eef2ff;
+            border-radius: 16px;
+            padding: 12px;
+            margin: 16px 0;
+            font-size: 0.85rem;
+            border-left: 4px solid #ff6600;
+        }
+        
+        .temp-loading { font-size: 0.7rem; color: #ff6600; margin-top: 4px; }
+        
+        footer {
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.65rem;
+            margin-top: 16px;
+        }
+        
+        hr { margin: 16px 0; border-color: #e2e8f0; }
+        
+        .login-buttons { display: flex; gap: 12px; flex-direction: column; }
+        
+        .mchs-logo {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+        
+        @media (max-width: 500px) { 
+            .card { padding: 18px; } 
+            .belarus-flag { width: 70px; height: 35px; bottom: 10px; right: 10px; }
+            .belarus-flag::after { bottom: -20px; font-size: 14px; }
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <div id="adminPanel" style="display: none;">
-        <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                <h1>👨‍💼 Админ-панель</h1>
-                <button id="logoutAdminBtn" class="outline" style="width: auto; padding: 6px 16px;">Выйти</button>
-            </div>
-            <p style="color: #5a6e7c; margin: 8px 0 16px 0;">Управление техникой и QR-кодами</p>
-            <button id="addCarAdminBtn" style="margin-bottom: 20px;">➕ Добавить машину</button>
-            <div id="addCarAdminForm" style="display: none; margin-bottom: 20px;">
-                <input type="text" id="newCarNameAdmin" placeholder="Название / госномер">
-                <div class="btn-group" style="margin-top: 10px;">
-                    <button id="cancelAddAdminBtn" class="outline">Отмена</button>
-                    <button id="confirmAddAdminBtn">Сохранить</button>
-                </div>
-            </div>
-            <h2>🚜 Список техники</h2>
-            <div id="adminCarsList"></div>
-            <div style="margin-top: 20px;">
-                <button id="openGoogleSheetBtn" class="secondary">📊 Открыть Google Таблицу</button>
-            </div>
-        </div>
-        <footer>🔐 QR-коды генерируются локально</footer>
-    </div>
+<div class="belarus-flag"></div>
 
+<div class="container">
+    <!-- СТРАНИЦА ВХОДА -->
     <div id="loginPage">
         <div class="card">
-            <h1>🚛 Учёт техники</h1>
-            <div class="password-panel">
-                <p style="margin-bottom: 20px;">Введите пароль для доступа к админ-панели</p>
-                <input type="password" id="adminPassword" placeholder="Пароль администратора" style="margin-bottom: 16px;">
-                <button id="loginAdminBtn">Войти как администратор</button>
-                <hr style="margin: 20px 0; border-color: #e2e8f0;">
-                <p style="color: #5a6e7c; font-size: 0.85rem;">Или наведите камеру на QR-код машины</p>
+            <div class="mchs-badge">
+                <span>🚒🔥</span>
+                <h2>МИНИСТЕРСТВО ПО ЧРЕЗВЫЧАЙНЫМ СИТУАЦИЯМ<br>РЕСПУБЛИКИ БЕЛАРУСЬ</h2>
+            </div>
+            <div class="mchs-logo">⚙️</div>
+            <h1>Учёт техники</h1>
+            <div class="login-buttons">
+                <button id="adminLoginBtn" class="btn-orange">👨‍💼 Администратор</button>
+                <button id="driverLoginBtn" class="btn-outline">🚚 Водитель</button>
+            </div>
+            <div id="adminPasswordDiv" style="display: none; margin-top: 16px;">
+                <input type="password" id="adminPassword" placeholder="Пароль администратора">
+                <button id="submitAdminBtn" style="margin-top: 10px;">Войти</button>
             </div>
         </div>
-        <footer>Водители: наведите камеру на QR-код машины</footer>
+        <footer>🇧🇾 МЧС Беларуси | Система учёта выездов техники</footer>
     </div>
 
-    <div id="driverPage" style="display: none;">
+    <!-- АДМИН-ПАНЕЛЬ -->
+    <div id="adminPanel" style="display: none;">
         <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 16px;">
-                <h1 id="driverCarName">🚛 Загрузка...</h1>
-                <div class="driver-badge" id="tripStatusBadge">Ожидание</div>
+            <div class="mchs-badge">
+                <span>🚒🔥</span>
+                <h2>МЧС БЕЛАРУСИ</h2>
             </div>
-            <div class="driver-note" id="driverNote">⚠️ Заполните данные выезда. После сохранения вы сможете добавить возврат.</div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h1>👨‍💼 Админ-панель</h1>
+                <button id="logoutAdminBtn" class="btn-outline" style="width: auto; padding: 6px 14px;">Выйти</button>
+            </div>
+            <button id="showAddCarBtn" style="margin-bottom: 16px;" class="btn-orange">➕ Добавить машину</button>
+            <div id="addCarForm" style="display: none;">
+                <input type="text" id="newCarName" placeholder="Название машины (например: АЦ-6,0 КамАЗ)">
+                <div class="btn-group"><button id="cancelAddBtn" class="btn-outline">Отмена</button><button id="confirmAddBtn">Сохранить</button></div>
+            </div>
+            <h2>🚒 Парк техники</h2>
+            <div id="adminCarsList"></div>
+            <button id="openSheetAdminBtn" class="btn-outline" style="margin-top: 16px;">📊 Открыть журнал (Google Таблица)</button>
+        </div>
+        <footer>🇧🇾 Администратор МЧС | Управление техникой</footer>
+    </div>
+
+    <!-- СПИСОК МАШИН ДЛЯ ВОДИТЕЛЯ -->
+    <div id="driverCarsPage" style="display: none;">
+        <div class="card">
+            <div class="mchs-badge">
+                <span>🚒🔥</span>
+                <h2>МЧС БЕЛАРУСИ</h2>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h1>🚚 Выберите машину</h1>
+                <button id="logoutDriverBtn" class="btn-outline" style="width: auto; padding: 6px 14px;">Выйти</button>
+            </div>
+            <div id="driverCarsList"></div>
+        </div>
+        <footer>🇧🇾 Нажмите на машину, чтобы заполнить данные выезда</footer>
+    </div>
+
+    <!-- СТРАНИЦА ПОЕЗДКИ ДЛЯ ВОДИТЕЛЯ -->
+    <div id="tripPage" style="display: none;">
+        <div class="card">
+            <div class="mchs-badge">
+                <span>🚒🔥</span>
+                <h2>МЧС БЕЛАРУСИ</h2>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h1 id="tripCarName">🚛 Загрузка...</h1>
+                <button id="backToCarsBtn" class="btn-outline" style="width: auto; padding: 6px 14px;">← Назад</button>
+            </div>
+            <div class="info-box" id="lastTripInfo">
+                📅 Последний пробег: — км
+            </div>
+            
             <div id="departureForm">
-                <h3>📤 Выезд</h3>
-                <div class="form-group"><label>ФИО водителя *</label><input type="text" id="driverName" placeholder="Иванов Иван Иванович"></div>
-                <div class="form-group"><label>Куда поехал / Маршрут *</label><input type="text" id="driverDestination" placeholder="Например: Минск, ул. Ленина 10"></div>
+                <h3>📤 Выезд по тревоге / заданию</h3>
+                <div class="form-group"><label>ФИО сотрудника *</label><input type="text" id="driverName" placeholder="Иванов И.И."></div>
+                <div class="form-group"><label>Куда направлен</label><input type="text" id="destination" placeholder="Населённый пункт, объект"></div>
                 <div class="form-group"><label>Дата выезда</label><input type="date" id="departureDate"></div>
                 <div class="form-group"><label>Время выезда</label><input type="time" id="departureTime"></div>
-                <div class="form-group"><label>Пробег при выезде (км)</label><input type="number" id="departureMileage" step="1" placeholder="Текущий пробег"></div>
-                <div class="form-group"><label>Топливо при выезде (л)</label><input type="number" id="departureFuel" step="1" placeholder="Уровень топлива"></div>
-                <div class="form-group"><label>Температура на момент выезда</label><input type="text" id="departureTemp" placeholder="Загружается..." readonly style="background:#f0f4f8;"><div class="temp-loading" id="tempLoading">🌡️ Автоматическое получение температуры...</div></div>
+                <div class="form-group"><label>Пробег (км)</label><input type="number" id="departureMileage" step="1" placeholder="Текущий пробег"></div>
+                <div class="form-group"><label>Топливо (л)</label><input type="number" id="departureFuel" step="1" placeholder="Уровень топлива"></div>
+                <div class="form-group"><label>Температура воздуха</label><input type="text" id="departureTemp" readonly placeholder="Автоматически"><div class="temp-loading" id="tempLoading">🌡️ Определяется...</div></div>
             </div>
-            <div id="returnForm" style="display: none; margin-top: 24px; border-top: 2px solid #e2e8f0; padding-top: 20px;">
-                <h3>🏁 Возврат</h3>
+            
+            <div id="returnForm" style="display: none;">
+                <h3>🏁 Возвращение в часть</h3>
                 <div class="form-group"><label>Дата возврата</label><input type="date" id="returnDate"></div>
                 <div class="form-group"><label>Время возврата</label><input type="time" id="returnTime"></div>
-                <div class="form-group"><label>Пробег при возврате (км)</label><input type="number" id="returnMileage" step="1" placeholder="Пробег после поездки"></div>
-                <div class="form-group"><label>Топливо при возврате (л)</label><input type="number" id="returnFuel" step="1" placeholder="Остаток топлива"></div>
+                <div class="form-group"><label>Пробег (км)</label><input type="number" id="returnMileage" step="1" placeholder="Пробег после выезда"></div>
+                <div class="form-group"><label>Топливо (л)</label><input type="number" id="returnFuel" step="1" placeholder="Остаток топлива"></div>
             </div>
-            <button id="driverSaveBtn" style="margin-top: 16px;">✅ Сохранить выезд</button>
-            <div id="successMsg" class="success-msg">✅ Данные отправлены!</div>
+            
+            <button id="saveTripBtn" class="btn-orange">✅ Сохранить выезд</button>
+            <div id="successMsg" class="success-msg">✅ Данные отправлены в журнал МЧС!</div>
         </div>
-        <footer>📱 После выезда можно будет добавить возврат в ту же поездку</footer>
+        <footer>🇧🇾 Все данные фиксируются в журнале учёта техники МЧС</footer>
     </div>
 </div>
 
 <script>
-    // ========== ВСТАВЬ СВОЮ ССЫЛКУ ИЗ GOOGLE APPS SCRIPT ==========
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzfz7eP9dg34fo8gWzl9Io37xuj-5Jf6tzORizkkBDAt09dHf2Wxzumi6qVsF7JLcP9/exec';
-    // ============================================================
-    
+    // ========== НАСТРОЙКИ ==========
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzfz7eP9dg34fo8gWzl9Io37xuj-5Jf6tzORizkkBDAt09dHf2Wxzumi6qVsF7JLcP9/exec'; // ВСТАВЬ СВОЮ ССЫЛКУ
     const ADMIN_PASSWORD = 'admin123';
-    const LAT = 53.9, LON = 27.5667;
-    let vehicles = [], currentCar = null, activeTrip = null;
-    const STORAGE_KEY = 'tech_admin_fleet_v4';
     
-    async function fetchTemperature(dateStr, timeStr) {
+    let vehicles = [];
+    let currentCar = null;
+    let activeTrip = null;
+    const STORAGE_KEY = 'mchs_vehicles';
+    
+    function loadVehicles() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) vehicles = JSON.parse(saved);
+        else vehicles = [{ id: 1, name: "АЦ-6,0 (КамАЗ 5490) А123ВС" }, { id: 2, name: "АЛ-30 (MAN TGS) В456ЕТ" }];
+        saveVehicles();
+    }
+    function saveVehicles() { localStorage.setItem(STORAGE_KEY, JSON.stringify(vehicles)); }
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+    
+    async function fetchTemperature(date, time) {
         try {
-            const hour = parseInt(timeStr.split(':')[0], 10);
-            const url = `https://archive-api.open-meteo.com/v1/archive?latitude=${LAT}&longitude=${LON}&start_date=${dateStr}&end_date=${dateStr}&hourly=temperature_2m&timezone=Europe/Minsk`;
+            const hour = parseInt(time.split(':')[0]);
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=53.9&longitude=27.5667&hourly=temperature_2m&start_date=${date}&end_date=${date}&timezone=Europe/Minsk`;
             const resp = await fetch(url);
-            if (!resp.ok) throw new Error();
             const data = await resp.json();
-            if (data.hourly && data.hourly.temperature_2m) {
+            if (data.hourly) {
                 for (let i = 0; i < data.hourly.time.length; i++) {
-                    const localHour = (new Date(data.hourly.time[i]).getUTCHours() + 3) % 24;
-                    if (localHour === hour || Math.abs(localHour - hour) <= 1) {
+                    const h = new Date(data.hourly.time[i]).getHours();
+                    if (h == hour) {
                         const t = data.hourly.temperature_2m[i];
                         return `${t > 0 ? '+' : ''}${Math.round(t)}°C`;
                     }
@@ -140,104 +385,117 @@
         } catch(e) { return "❓ нет данных"; }
     }
     
-    async function updateTemperature() {
-        const date = document.getElementById('departureDate').value;
-        const time = document.getElementById('departureTime').value;
-        if (!date || !time) return;
-        const temp = await fetchTemperature(date, time);
-        document.getElementById('departureTemp').value = temp;
+    async function sendToSheet(data) {
+        try {
+            await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+            return true;
+        } catch(e) { return false; }
     }
     
-    function generateQRCode(elementId, url) {
+    function generateQR(elementId, url) {
         const container = document.getElementById(elementId);
         if (!container) return;
         container.innerHTML = '';
-        new QRCode(container, { text: url, width: 180, height: 180, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+        new QRCode(container, { text: url, width: 160, height: 160 });
     }
     
-    function loadData() {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        vehicles = saved ? JSON.parse(saved) : [{ id: 1, name: "КамАЗ 5490 (А123ВС)" }, { id: 2, name: "MAN TGS (В456ЕТ)" }];
-        saveData();
-    }
-    function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(vehicles)); }
-    
-    async function sendToGoogleSheet(data) {
-        try { await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); return true; } 
-        catch(e) { return false; }
-    }
-    
+    // АДМИН
     function renderAdminList() {
         const container = document.getElementById('adminCarsList');
         if (!container) return;
-        if (!vehicles.length) { container.innerHTML = '<div style="text-align:center;padding:40px;">Нет машин</div>'; return; }
+        if (!vehicles.length) { container.innerHTML = '<p>Нет техники, добавьте</p>'; return; }
         container.innerHTML = '';
         vehicles.forEach(car => {
             const div = document.createElement('div');
             div.className = 'car-card';
-            div.innerHTML = `<div class="car-name"><span>${escapeHtml(car.name)}</span><button class="delete-car" data-id="${car.id}" style="background:none;color:#dc2626;width:auto;padding:4px 12px;">🗑</button></div><div class="btn-group"><button class="show-qr-btn" data-id="${car.id}" data-name="${escapeHtml(car.name)}" style="background:#94a3b8;padding:8px;">📱 QR-код</button></div><div id="qr-admin-${car.id}" style="display:none;margin-top:12px;text-align:center;"></div>`;
+            div.innerHTML = `
+                <div class="car-name">
+                    <span>🚒 ${escapeHtml(car.name)}</span>
+                    <button class="deleteCar" data-id="${car.id}" style="background:none; color:#dc2626; width:auto; padding:4px 12px;">🗑</button>
+                </div>
+                <button class="showQR" data-id="${car.id}" data-name="${escapeHtml(car.name)}" style="margin-top:8px; background:#ff6600;">📱 QR-код для техники</button>
+                <div id="qr-${car.id}" style="display:none; margin-top:10px;"></div>
+            `;
             container.appendChild(div);
-            div.querySelector('.delete-car').onclick = () => { if(confirm('Удалить машину?')) { vehicles = vehicles.filter(v => v.id !== car.id); saveData(); renderAdminList(); } };
-            div.querySelector('.show-qr-btn').onclick = (e) => {
-                e.stopPropagation();
-                const qrDiv = document.getElementById(`qr-admin-${car.id}`);
+            div.querySelector('.deleteCar').onclick = () => { if(confirm('Удалить машину?')) { vehicles = vehicles.filter(v => v.id !== car.id); saveVehicles(); renderAdminList(); } };
+            div.querySelector('.showQR').onclick = () => {
+                const qrDiv = document.getElementById(`qr-${car.id}`);
                 if (qrDiv.style.display === 'none') {
                     const url = `${window.location.origin}${window.location.pathname}?carId=${car.id}`;
                     qrDiv.style.display = 'block';
-                    qrDiv.innerHTML = `<div style="font-weight:600;">QR-код для ${escapeHtml(car.name)}:</div><div id="qr-code-${car.id}" class="qr-container"></div><div style="font-size:0.7rem;">${url}</div><button class="copy-link-btn" data-url="${url}" style="margin-top:8px;padding:6px;">📋 Скопировать</button><button class="download-qr-btn" data-id="${car.id}" style="margin-top:8px;padding:6px;background:#22c55e;">💾 Скачать QR</button>`;
-                    generateQRCode(`qr-code-${car.id}`, url);
-                    qrDiv.querySelector('.copy-link-btn').onclick = () => { navigator.clipboard.writeText(url); alert('Ссылка скопирована!'); };
-                    qrDiv.querySelector('.download-qr-btn').onclick = () => { const canvas = qrDiv.querySelector('canvas'); if(canvas) { const a = document.createElement('a'); a.download = `QR_${car.name.replace(/[^a-zа-яё0-9]/gi, '_')}.png`; a.href = canvas.toDataURL(); a.click(); } };
+                    qrDiv.innerHTML = `<div class="qr-container" id="qr-code-${car.id}"></div><button class="downloadQR" data-id="${car.id}" style="margin-top:8px; background:#22c55e;">💾 Скачать QR-код</button>`;
+                    generateQR(`qr-code-${car.id}`, url);
+                    qrDiv.querySelector('.downloadQR').onclick = () => { const canvas = qrDiv.querySelector('canvas'); if(canvas) { const a = document.createElement('a'); a.download = `QR_${car.name.replace(/[^a-z0-9а-яё]/gi,'_')}.png`; a.href = canvas.toDataURL(); a.click(); } };
                 } else { qrDiv.style.display = 'none'; qrDiv.innerHTML = ''; }
             };
         });
     }
     
-    async function showDriverPage(carId) {
+    // ВОДИТЕЛЬ
+    function renderDriverCarsList() {
+        const container = document.getElementById('driverCarsList');
+        if (!container) return;
+        if (!vehicles.length) { container.innerHTML = '<p>Нет техники</p>'; return; }
+        container.innerHTML = '';
+        vehicles.forEach(car => {
+            const div = document.createElement('div');
+            div.className = 'car-card';
+            div.innerHTML = `<div class="car-name"><span>🚒 ${escapeHtml(car.name)}</span><span style="font-size:0.7rem; color:#ff6600;">Выбрать →</span></div>`;
+            div.onclick = () => showTripPage(car.id);
+            container.appendChild(div);
+        });
+    }
+    
+    async function showTripPage(carId) {
         currentCar = vehicles.find(v => v.id === carId);
-        if (!currentCar) { alert('Машина не найдена'); showLoginPage(); return; }
-        document.getElementById('driverCarName').innerHTML = `🚛 ${escapeHtml(currentCar.name)}`;
-        const savedTrip = localStorage.getItem(`trip_${carId}`);
-        if (savedTrip) { activeTrip = JSON.parse(savedTrip); showReturnForm(); } 
+        if (!currentCar) return;
+        document.getElementById('tripCarName').innerHTML = `🚒 ${escapeHtml(currentCar.name)}`;
+        const saved = localStorage.getItem(`trip_${carId}`);
+        if (saved) { activeTrip = JSON.parse(saved); showReturnForm(); }
         else { activeTrip = null; showDepartureForm(); }
         const now = new Date();
         document.getElementById('departureDate').value = now.toISOString().slice(0,10);
         document.getElementById('departureTime').value = now.toLocaleTimeString('ru-RU', {hour:'2-digit',minute:'2-digit'});
         document.getElementById('returnDate').value = now.toISOString().slice(0,10);
         document.getElementById('returnTime').value = now.toLocaleTimeString('ru-RU', {hour:'2-digit',minute:'2-digit'});
-        document.getElementById('driverName').value = ''; document.getElementById('driverDestination').value = '';
-        document.getElementById('departureMileage').value = ''; document.getElementById('departureFuel').value = '';
-        document.getElementById('returnMileage').value = ''; document.getElementById('returnFuel').value = '';
-        document.getElementById('departureDate').onchange = updateTemperature;
-        document.getElementById('departureTime').onchange = updateTemperature;
-        if (!activeTrip) setTimeout(() => updateTemperature(), 100);
-        document.getElementById('loginPage').style.display = 'none';
-        document.getElementById('adminPanel').style.display = 'none';
-        document.getElementById('driverPage').style.display = 'block';
+        const updateTemp = async () => { const temp = await fetchTemperature(document.getElementById('departureDate').value, document.getElementById('departureTime').value); document.getElementById('departureTemp').value = temp; };
+        document.getElementById('departureDate').onchange = updateTemp;
+        document.getElementById('departureTime').onchange = updateTemp;
+        await updateTemp();
+        document.getElementById('driverCarsPage').style.display = 'none';
+        document.getElementById('tripPage').style.display = 'block';
     }
     
     function showDepartureForm() {
-        document.getElementById('tripStatusBadge').innerHTML = '📤 Выезд не оформлен';
-        document.getElementById('driverNote').innerHTML = '⚠️ Заполните данные выезда. После сохранения вы сможете добавить возврат.';
         document.getElementById('returnForm').style.display = 'none';
-        document.getElementById('driverSaveBtn').innerHTML = '✅ Сохранить выезд';
+        document.getElementById('saveTripBtn').innerHTML = '✅ Сохранить выезд';
+        document.getElementById('driverName').disabled = false;
+        document.getElementById('destination').disabled = false;
+        document.getElementById('departureDate').disabled = false;
+        document.getElementById('departureTime').disabled = false;
+        document.getElementById('departureMileage').disabled = false;
+        document.getElementById('departureFuel').disabled = false;
+        document.getElementById('driverName').value = '';
+        document.getElementById('destination').value = '';
+        document.getElementById('departureMileage').value = '';
+        document.getElementById('departureFuel').value = '';
+        document.getElementById('returnMileage').value = '';
+        document.getElementById('returnFuel').value = '';
     }
     
     function showReturnForm() {
-        document.getElementById('tripStatusBadge').innerHTML = '🚚 Выезд оформлен, ожидает возврат';
-        document.getElementById('driverNote').innerHTML = '✅ Выезд уже зафиксирован. Теперь заполните данные возврата.';
         document.getElementById('returnForm').style.display = 'block';
-        document.getElementById('driverSaveBtn').innerHTML = '🏁 Сохранить возврат';
+        document.getElementById('saveTripBtn').innerHTML = '🏁 Сохранить возврат';
         if (activeTrip) {
             document.getElementById('driverName').value = activeTrip.driverName;
-            document.getElementById('driverDestination').value = activeTrip.destination;
-            document.getElementById('driverName').readOnly = true;
-            document.getElementById('driverDestination').readOnly = true;
-            document.getElementById('departureDate').readOnly = true;
-            document.getElementById('departureTime').readOnly = true;
-            document.getElementById('departureMileage').readOnly = true;
-            document.getElementById('departureFuel').readOnly = true;
-            document.getElementById('departureTemp').readOnly = true;
+            document.getElementById('destination').value = activeTrip.destination;
+            document.getElementById('driverName').disabled = true;
+            document.getElementById('destination').disabled = true;
+            document.getElementById('departureDate').disabled = true;
+            document.getElementById('departureTime').disabled = true;
+            document.getElementById('departureMileage').disabled = true;
+            document.getElementById('departureFuel').disabled = true;
+            document.getElementById('departureTemp').disabled = true;
             document.getElementById('departureDate').value = activeTrip.departureDate;
             document.getElementById('departureTime').value = activeTrip.departureTime;
             document.getElementById('departureMileage').value = activeTrip.departureMileage;
@@ -246,79 +504,63 @@
         }
     }
     
-    async function saveDriverTrip() {
+    async function saveTrip() {
         if (!activeTrip) {
             const driverName = document.getElementById('driverName').value.trim();
-            const destination = document.getElementById('driverDestination').value.trim();
-            const departureDate = document.getElementById('departureDate').value;
-            const departureTime = document.getElementById('departureTime').value;
-            const departureMileage = parseFloat(document.getElementById('departureMileage').value);
-            let departureFuel = parseFloat(document.getElementById('departureFuel').value);
-            let temperature = document.getElementById('departureTemp').value;
-            if (!driverName) { alert('Введите ФИО'); return; }
-            if (!destination) { alert('Укажите куда поехал'); return; }
-            if (!departureDate || !departureTime) { alert('Заполните дату и время'); return; }
-            if (isNaN(departureMileage)) { alert('Укажите пробег'); return; }
-            if (isNaN(departureFuel)) departureFuel = 0;
-            if (!temperature || temperature === '—°C') temperature = await fetchTemperature(departureDate, departureTime);
-            activeTrip = { tripId: Date.now(), carId: currentCar.id, carName: currentCar.name, driverName, destination, departureDate, departureTime, departureMileage, departureFuel, temperature, returnDate: null, returnTime: null, returnMileage: null, returnFuel: null };
+            const destination = document.getElementById('destination').value.trim();
+            const date = document.getElementById('departureDate').value;
+            const time = document.getElementById('departureTime').value;
+            const mileage = parseFloat(document.getElementById('departureMileage').value);
+            let fuel = parseFloat(document.getElementById('departureFuel').value);
+            let temp = document.getElementById('departureTemp').value;
+            if (!driverName) { alert('Введите ФИО сотрудника'); return; }
+            if (!destination) { alert('Введите куда направлен'); return; }
+            if (!date || !time) { alert('Введите дату и время'); return; }
+            if (isNaN(mileage)) { alert('Введите пробег'); return; }
+            if (isNaN(fuel)) fuel = 0;
+            if (!temp || temp === '—°C') temp = await fetchTemperature(date, time);
+            activeTrip = { carId: currentCar.id, carName: currentCar.name, driverName, destination, departureDate: date, departureTime: time, departureMileage: mileage, departureFuel: fuel, temperature: temp };
             localStorage.setItem(`trip_${currentCar.id}`, JSON.stringify(activeTrip));
-            await sendToGoogleSheet({ type: 'departure', ...activeTrip });
+            await sendToSheet({ type: 'departure', ...activeTrip });
             document.getElementById('successMsg').style.display = 'block';
-            setTimeout(() => document.getElementById('successMsg').style.display = 'none', 3000);
+            setTimeout(() => document.getElementById('successMsg').style.display = 'none', 2000);
             showReturnForm();
         } else {
-            const returnDate = document.getElementById('returnDate').value;
-            const returnTime = document.getElementById('returnTime').value;
-            const returnMileage = parseFloat(document.getElementById('returnMileage').value);
-            let returnFuel = parseFloat(document.getElementById('returnFuel').value);
-            if (!returnDate || !returnTime) { alert('Заполните дату и время возврата'); return; }
-            if (isNaN(returnMileage)) { alert('Укажите пробег при возврате'); return; }
-            if (isNaN(returnFuel)) returnFuel = 0;
-            if (returnMileage < activeTrip.departureMileage && !confirm(`Пробег при возврате (${returnMileage} км) меньше чем при выезде (${activeTrip.departureMileage} км). Всё равно сохранить?`)) return;
-            activeTrip.returnDate = returnDate; activeTrip.returnTime = returnTime; activeTrip.returnMileage = returnMileage; activeTrip.returnFuel = returnFuel;
-            await sendToGoogleSheet({ type: 'complete', ...activeTrip });
+            const date = document.getElementById('returnDate').value;
+            const time = document.getElementById('returnTime').value;
+            const mileage = parseFloat(document.getElementById('returnMileage').value);
+            let fuel = parseFloat(document.getElementById('returnFuel').value);
+            if (!date || !time) { alert('Введите дату и время возврата'); return; }
+            if (isNaN(mileage)) { alert('Введите пробег при возврате'); return; }
+            if (isNaN(fuel)) fuel = 0;
+            activeTrip.returnDate = date; activeTrip.returnTime = time; activeTrip.returnMileage = mileage; activeTrip.returnFuel = fuel;
+            await sendToSheet({ type: 'complete', ...activeTrip });
             localStorage.removeItem(`trip_${currentCar.id}`);
-            activeTrip = null;
-            document.getElementById('successMsg').style.display = 'block';
-            setTimeout(() => document.getElementById('successMsg').style.display = 'none', 3000);
-            alert('✅ Поездка завершена! Спасибо.');
-            showDepartureForm();
-            document.getElementById('returnForm').style.display = 'none';
-            document.getElementById('driverSaveBtn').innerHTML = '✅ Сохранить выезд';
-            document.getElementById('driverName').readOnly = false;
-            document.getElementById('driverDestination').readOnly = false;
-            document.getElementById('departureDate').readOnly = false;
-            document.getElementById('departureTime').readOnly = false;
-            document.getElementById('departureMileage').readOnly = false;
-            document.getElementById('departureFuel').readOnly = false;
-            document.getElementById('departureTemp').readOnly = false;
-            document.getElementById('driverName').value = ''; document.getElementById('driverDestination').value = '';
-            document.getElementById('departureMileage').value = ''; document.getElementById('departureFuel').value = '';
-            document.getElementById('returnMileage').value = ''; document.getElementById('returnFuel').value = '';
-            const now = new Date();
-            document.getElementById('departureDate').value = now.toISOString().slice(0,10);
-            document.getElementById('departureTime').value = now.toLocaleTimeString('ru-RU', {hour:'2-digit',minute:'2-digit'});
-            setTimeout(() => updateTemperature(), 100);
+            alert('✅ Поездка завершена! Данные сохранены в журнале МЧС.');
+            showTripPage(currentCar.id);
         }
     }
     
-    function showAdminPanel() { renderAdminList(); document.getElementById('loginPage').style.display = 'none'; document.getElementById('driverPage').style.display = 'none'; document.getElementById('adminPanel').style.display = 'block'; }
-    function showLoginPage() { document.getElementById('adminPanel').style.display = 'none'; document.getElementById('driverPage').style.display = 'none'; document.getElementById('loginPage').style.display = 'block'; document.getElementById('adminPassword').value = ''; }
-    function handleUrlParam() { const params = new URLSearchParams(window.location.search); const carId = params.get('carId'); if(carId) { const car = vehicles.find(v => v.id == carId); if(car) { showDriverPage(car.id); return true; } } showLoginPage(); return false; }
-    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
+    function showAdminPanel() { renderAdminList(); document.getElementById('loginPage').style.display = 'none'; document.getElementById('adminPanel').style.display = 'block'; document.getElementById('driverCarsPage').style.display = 'none'; document.getElementById('tripPage').style.display = 'none'; }
+    function showDriverCarsPage() { renderDriverCarsList(); document.getElementById('loginPage').style.display = 'none'; document.getElementById('adminPanel').style.display = 'none'; document.getElementById('driverCarsPage').style.display = 'block'; document.getElementById('tripPage').style.display = 'none'; }
+    function showLogin() { document.getElementById('loginPage').style.display = 'block'; document.getElementById('adminPanel').style.display = 'none'; document.getElementById('driverCarsPage').style.display = 'none'; document.getElementById('tripPage').style.display = 'none'; document.getElementById('adminPasswordDiv').style.display = 'none'; }
+    function handleUrlParams() { const params = new URLSearchParams(window.location.search); const carId = params.get('carId'); if (carId) { const car = vehicles.find(v => v.id == carId); if (car) { currentCar = car; showTripPage(car.id); return true; } } return false; }
     
-    document.addEventListener('DOMContentLoaded', function() {
-        loadData();
-        document.getElementById('loginAdminBtn').onclick = () => { if(document.getElementById('adminPassword').value === ADMIN_PASSWORD) showAdminPanel(); else alert('Неверный пароль!'); };
-        document.getElementById('logoutAdminBtn').onclick = showLoginPage;
-        document.getElementById('openGoogleSheetBtn').onclick = () => window.open('https://sheets.google.com', '_blank');
-        document.getElementById('addCarAdminBtn').onclick = () => { const f = document.getElementById('addCarAdminForm'); f.style.display = f.style.display === 'none' ? 'block' : 'none'; };
-        document.getElementById('cancelAddAdminBtn').onclick = () => document.getElementById('addCarAdminForm').style.display = 'none';
-        document.getElementById('confirmAddAdminBtn').onclick = () => { const name = document.getElementById('newCarNameAdmin').value.trim(); if(!name) { alert('Введите название'); return; } vehicles.push({ id: Date.now(), name }); saveData(); renderAdminList(); document.getElementById('addCarAdminForm').style.display = 'none'; };
-        document.getElementById('driverSaveBtn').onclick = saveDriverTrip;
-        handleUrlParam();
-        window.addEventListener('popstate', () => handleUrlParam());
+    document.addEventListener('DOMContentLoaded', () => {
+        loadVehicles();
+        document.getElementById('adminLoginBtn').onclick = () => { document.getElementById('adminPasswordDiv').style.display = 'block'; };
+        document.getElementById('submitAdminBtn').onclick = () => { if (document.getElementById('adminPassword').value === ADMIN_PASSWORD) showAdminPanel(); else alert('Неверный пароль!'); };
+        document.getElementById('driverLoginBtn').onclick = () => showDriverCarsPage();
+        document.getElementById('logoutAdminBtn').onclick = showLogin;
+        document.getElementById('logoutDriverBtn').onclick = showLogin;
+        document.getElementById('backToCarsBtn').onclick = () => showDriverCarsPage();
+        document.getElementById('openSheetAdminBtn').onclick = () => window.open('https://sheets.google.com', '_blank');
+        document.getElementById('showAddCarBtn').onclick = () => { document.getElementById('addCarForm').style.display = 'block'; };
+        document.getElementById('cancelAddBtn').onclick = () => { document.getElementById('addCarForm').style.display = 'none'; };
+        document.getElementById('confirmAddBtn').onclick = () => { const name = document.getElementById('newCarName').value.trim(); if (!name) { alert('Введите название'); return; } vehicles.push({ id: Date.now(), name: name }); saveVehicles(); renderAdminList(); renderDriverCarsList(); document.getElementById('addCarForm').style.display = 'none'; document.getElementById('newCarName').value = ''; };
+        document.getElementById('saveTripBtn').onclick = saveTrip;
+        if (!handleUrlParams()) showLogin();
+        window.addEventListener('popstate', () => handleUrlParams());
     });
 </script>
 </body>
